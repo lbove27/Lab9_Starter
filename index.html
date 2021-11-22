@@ -59,7 +59,7 @@
           <option>+</option>
           <option>-</option>
           <option>*</option>
-          <option>/</option>
+          <option> </option>
         </select>
         <input name="second-num" id="second-num" />
         <button id="calculate">Calculate</button>
@@ -87,6 +87,14 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+    token: "ab12426cb6ae4c36a30f165ee1a43258"
+    // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -95,14 +103,148 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
+      if(isNaN(firstNum) == true) {
+        throw new Error('First input must be a number');
+      }
+      if(isNaN(secondNum) == true) {
+        throw new invalidSecondInput("Custom error: invalid second argument");
+      }
+      try {
+        let num = 5;
+        console.log(eval(`${num} ${operator} ${num}`));
+      } catch(err) {
+        console.error("Invalid operator choice");
+      } finally {
+        console.log('First Number:' + firstNum);
+        console.log('Second Number:' + secondNum);
+        console.log('Operator: ' + operator);
+      }
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
+
+    class invalidSecondInput extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "SecondInputInvalidError";
+      }
+    }
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns[0].addEventListener('click', function() {
+      console.log("Start Log");
+    });
+
+    errorBtns[1].addEventListener('click', function() {
+      try {
+        const a = 0;
+        a++;
+      } catch(err) {
+        console.error("Some error occurred (cannot reassign a const)");
+      }
+      
+    });
+
+    errorBtns[2].addEventListener('click', function() {
+      console.count();
+    });
+
+    errorBtns[3].addEventListener('click', function() {
+      console.warn("Stop it. You've been warned.");
+    });
+
+    const reason = '5 is less than 4, right?';
+    errorBtns[4].addEventListener('click', function() {
+      console.assert(5 < 4, {reason});
+    });
+
+    errorBtns[5].addEventListener('click', function() {
+        console.clear();
+    });
+
+    errorBtns[6].addEventListener('click', function() {
+      console.dir(document.body);
+    });
+
+    errorBtns[7].addEventListener('click', function() {
+      console.dirxml(document);
+    });
+
+    errorBtns[8].addEventListener('click', function() {
+      console.group("Error Button Group");
+      console.info('Warn');
+      console.info('Assert');
+      console.info('Error');
+    });
+
+    errorBtns[9].addEventListener('click', function() {
+      console.groupEnd("Error Button Group");
+    });
+
+    errorBtns[10].addEventListener('click', function() {
+      console.table([
+        {
+          Buttons: 'time',
+          Finished: 'No',
+        },
+        {
+          Buttons: 'trace',
+          Finished: 'No',
+        },
+        {
+          Buttons: 'Global Error',
+          Finished: 'No',
+        }
+      ]);
+    });
+
+    errorBtns[11].addEventListener('click', function() {
+      console.time(['Timer']);
+    });
+
+    errorBtns[12].addEventListener('click', function() {
+      console.timeEnd(['Timer']);
+    });
+
+    errorBtns[13].addEventListener('click', function() {
+      const iiiii = () => { iiii(); };
+      const iiii = () => { iii(); };
+      const iii = () => { ii(); };
+      const ii = () => { i(); };
+      const i = () => { console.trace(); };
+      iiiii();
+    });
+
+    errorBtns[14].addEventListener('click', function() {
+      window.onerror = function(message, url, line) {
+        console.log("A global error has occurred.");
+        console.log("Message: " + message + "\nURL :" + url + "\nLine: " + line);
+        return false;
+      }
+      bug();
+    });
+
+    window.onerror = function(message, url, line) {
+      console.log("Demonstration catching an error using window.onerror and collecting the message");
+      console.log("Message: " + message);
+      return true;
+    }
+    TrackJS.track('Testing TrackJS!');
+    bug2();
+
+
+
+    
+    
+
+
+
+    
   </script>
+
+
 </body>
 
 </html>
